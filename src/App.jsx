@@ -70,9 +70,10 @@ function App() {
     setTorqueAfter('');
   };
 
-  // Drag and Zoom State
+  // Drag, Zoom and Fit Mode State
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
+  const [fitMode, setFitMode] = useState('contain'); // 'contain' for auto-fitting wide car photos, 'cover' for filling
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef({ x: 0, y: 0, initPosX: 0, initPosY: 0 });
 
@@ -116,6 +117,7 @@ function App() {
     setImage(dataUrl);
     setPosition({ x: 0, y: 0 });
     setZoom(1);
+    setFitMode('contain');
     stopCamera();
   };
 
@@ -124,10 +126,22 @@ function App() {
     if (file) {
       stopCamera();
       const reader = new FileReader();
-      reader.onload = (e) => {
-        setImage(e.target.result);
+      reader.onload = (event) => {
+        const dataUrl = event.target.result;
+        setImage(dataUrl);
         setPosition({ x: 0, y: 0 });
         setZoom(1);
+
+        // Auto-detect wide landscape photos and set fitMode to 'contain' so wide cars are not cropped!
+        const img = new Image();
+        img.onload = () => {
+          if (img.width >= img.height) {
+            setFitMode('contain');
+          } else {
+            setFitMode('cover');
+          }
+        };
+        img.src = dataUrl;
       };
       reader.readAsDataURL(file);
     }
@@ -309,7 +323,29 @@ function App() {
                 <RotateCcw size={12} /> Sıfırla
               </button>
             </label>
+
+            {/* Fit Mode Toggle */}
             <div style={{ marginTop: '0.5rem' }}>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Görünüm Modu</span>
+              <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.25rem' }}>
+                <button 
+                  className={`btn ${fitMode === 'contain' ? 'btn-primary' : ''}`}
+                  style={{ flex: 1, padding: '0.4rem', fontSize: '0.75rem', backgroundColor: fitMode === 'contain' ? undefined : 'var(--bg-panel)' }}
+                  onClick={() => setFitMode('contain')}
+                >
+                  Sığdır (Kırpma)
+                </button>
+                <button 
+                  className={`btn ${fitMode === 'cover' ? 'btn-primary' : ''}`}
+                  style={{ flex: 1, padding: '0.4rem', fontSize: '0.75rem', backgroundColor: fitMode === 'cover' ? undefined : 'var(--bg-panel)' }}
+                  onClick={() => setFitMode('cover')}
+                >
+                  Doldur (Kapla)
+                </button>
+              </div>
+            </div>
+
+            <div style={{ marginTop: '0.75rem' }}>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Yakınlaştır: {zoom.toFixed(1)}x</span>
               <input 
                 type="range" 
@@ -490,7 +526,7 @@ function App() {
                   width: '100%',
                   height: '100%',
                   backgroundImage: `url(${image})`,
-                  backgroundSize: 'cover',
+                  backgroundSize: fitMode,
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
                   transform: `translate3d(${position.x}px, ${position.y}px, 0) scale(${zoom})`,
