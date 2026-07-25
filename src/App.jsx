@@ -225,7 +225,7 @@ function App() {
     setZoom(1);
   };
 
-  // Download Handler (Mobile & Desktop HD Export Fix)
+  // Download Handler (Mobile Gallery & Desktop HD Export)
   const handleDownload = async () => {
     if (!exportRef.current) return;
     if (isCameraActive) {
@@ -255,13 +255,26 @@ function App() {
       // Pass 2: Render crisp high-definition PNG data URL
       const dataUrl = await toPng(node, options);
 
-      // Convert Data URL to Blob for seamless iOS Safari and Android Mobile downloads
       const res = await fetch(dataUrl);
       const blob = await res.blob();
-      const blobUrl = URL.createObjectURL(blob);
-
       const fileName = `ECUPro_${mainTitle1}_${mainTitle2}_${format}.png`.replace(/\s+/g, '_');
+      const file = new File([blob], fileName, { type: 'image/png' });
 
+      // Use Web Share API for Mobile Devices to allow direct "Görseli Kaydet / Save to Gallery"
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: 'ECU Pro Görsel'
+          });
+          return;
+        } catch (shareErr) {
+          if (shareErr.name === 'AbortError') return; // User closed share sheet
+        }
+      }
+
+      // Desktop or Fallback Download
+      const blobUrl = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.download = fileName;
       link.href = blobUrl;
