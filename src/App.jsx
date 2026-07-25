@@ -468,17 +468,17 @@ function App() {
                 }}
               />
             ) : image ? (
-              <img 
-                src={image} 
-                alt="Uploaded Car" 
+              <div 
                 className="bg-image"
                 style={{
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: `calc(50% + ${position.x}px) calc(50% + ${position.y}px)`,
-                  transform: `scale(${zoom})`,
-                  willChange: 'object-position, transform'
+                  backgroundImage: `url(${image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat',
+                  transform: `translate3d(${position.x}px, ${position.y}px, 0) scale(${zoom})`,
+                  transformOrigin: 'center center'
                 }}
               />
             ) : (
