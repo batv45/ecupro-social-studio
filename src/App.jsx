@@ -70,10 +70,9 @@ function App() {
     setTorqueAfter('');
   };
 
-  // Drag, Zoom and Fit Mode State
+  // Drag and Zoom State
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [fitMode, setFitMode] = useState('contain'); // 'contain' for auto-fitting wide car photos, 'cover' for filling
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef({ x: 0, y: 0, initPosX: 0, initPosY: 0 });
 
@@ -117,7 +116,6 @@ function App() {
     setImage(dataUrl);
     setPosition({ x: 0, y: 0 });
     setZoom(1);
-    setFitMode('contain');
     stopCamera();
   };
 
@@ -131,7 +129,6 @@ function App() {
         setImage(dataUrl);
         setPosition({ x: 0, y: 0 });
         setZoom(1);
-        setFitMode('contain'); // Always use contain so image is never auto-cropped in preview!
       };
       reader.readAsDataURL(file);
     }
@@ -314,30 +311,7 @@ function App() {
               </button>
             </label>
 
-            {/* Fit Mode Toggle */}
             <div style={{ marginTop: '0.5rem' }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Görünüm Modu</span>
-              <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.25rem' }}>
-                <button 
-                  className={`btn ${fitMode === 'contain' ? 'btn-primary' : ''}`}
-                  style={{ flex: 1, padding: '0.45rem 0.2rem', fontSize: '0.72rem', backgroundColor: fitMode === 'contain' ? undefined : 'var(--bg-panel)' }}
-                  onClick={() => setFitMode('contain')}
-                  title="Fotoğrafın hiçbir yerini kesmez, tamamını sığdırır"
-                >
-                  Sığdır (Kırpmasız)
-                </button>
-                <button 
-                  className={`btn ${fitMode === 'cover' ? 'btn-primary' : ''}`}
-                  style={{ flex: 1, padding: '0.45rem 0.2rem', fontSize: '0.72rem', backgroundColor: fitMode === 'cover' ? undefined : 'var(--bg-panel)' }}
-                  onClick={() => setFitMode('cover')}
-                  title="Çerçeveyi tamamen doldurur"
-                >
-                  Doldur (Kapla)
-                </button>
-              </div>
-            </div>
-
-            <div style={{ marginTop: '0.75rem' }}>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Yakınlaştır / Boyutlandır: {zoom.toFixed(2)}x</span>
               <input 
                 type="range" 
@@ -518,7 +492,7 @@ function App() {
                   width: '100%',
                   height: '100%',
                   backgroundImage: `url(${image})`,
-                  backgroundSize: fitMode,
+                  backgroundSize: 'contain',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
                   transform: `translate3d(${position.x}px, ${position.y}px, 0) scale(${zoom})`,
