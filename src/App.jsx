@@ -59,9 +59,9 @@ function App() {
   const [subtitle, setSubtitle] = useState('Stage Performans Yazılımı');
   const [fuelSavings, setFuelSavings] = useState('');
   const [hpBefore, setHpBefore] = useState('80');
-  const [hpAfter, setHpAfter] = useState('120');
+  const [hpAfter, setHpAfter] = useState('170');
   const [torqueBefore, setTorqueBefore] = useState('130');
-  const [torqueAfter, setTorqueAfter] = useState('195');
+  const [torqueAfter, setTorqueAfter] = useState('320');
 
   const clearStats = () => {
     setHpBefore('');
