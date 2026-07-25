@@ -173,12 +173,26 @@ function App() {
     }
     try {
       const node = exportRef.current;
-      
+      const targetWidth = node.offsetWidth;
+      const targetHeight = node.offsetHeight;
+
+      const options = {
+        width: targetWidth,
+        height: targetHeight,
+        style: {
+          width: `${targetWidth}px`,
+          height: `${targetHeight}px`,
+          margin: '0',
+          transform: 'none',
+        },
+        pixelRatio: 2,
+      };
+
       // Pass 1: Warm up html-to-image font/image cache
-      await toPng(node, { pixelRatio: 2, skipAutoScale: true });
+      await toPng(node, options);
 
       // Pass 2: Render crisp high-definition PNG data URL
-      const dataUrl = await toPng(node, { pixelRatio: 2, skipAutoScale: true });
+      const dataUrl = await toPng(node, options);
 
       // Convert Data URL to Blob for seamless iOS Safari and Android Mobile downloads
       const res = await fetch(dataUrl);
