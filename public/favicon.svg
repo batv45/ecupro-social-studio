@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <rect width="512" height="512" rx="96" fill="#121212"/>
   <rect x="14" y="14" width="484" height="484" rx="82" fill="none" stroke="#eda907" stroke-width="26"/>
-  <text x="50%" y="53%" dominant-baseline="central" text-anchor="middle" font-family="system-ui, -apple-system, Arial, sans-serif" font-weight="900" font-size="340" letter-spacing="-18">
-    <tspan fill="#eda907">E</tspan><tspan fill="#ffffff">P</tspan>
+  <text x="50%" y="49%" dominant-baseline="central" text-anchor="middle" font-family="'Inter', system-ui, -apple-system, sans-serif" font-weight="900" font-size="410" fill="#eda907">
+    e
   </text>
 </svg>
