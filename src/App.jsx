@@ -70,11 +70,71 @@ function App() {
     setTorqueAfter('');
   };
 
-  // Drag and Zoom State
+  // Drag, Zoom and Touch Pinch State
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef({ x: 0, y: 0, initPosX: 0, initPosY: 0 });
+  const touchStartRef = useRef({ x: 0, y: 0, initPosX: 0, initPosY: 0, dist: 0, initZoom: 1 });
+
+  const getTouchDistance = (t1, t2) => {
+    const dx = t1.clientX - t2.clientX;
+    const dy = t1.clientY - t2.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  };
+
+  // Touch Handlers for Mobile (Pinch-to-Zoom & Drag)
+  const handleTouchStart = (e) => {
+    if (!image || isCameraActive) return;
+
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      setIsDragging(true);
+      touchStartRef.current = {
+        x: touch.clientX,
+        y: touch.clientY,
+        initPosX: position.x,
+        initPosY: position.y,
+        dist: 0,
+        initZoom: zoom
+      };
+    } else if (e.touches.length === 2) {
+      setIsDragging(false);
+      const dist = getTouchDistance(e.touches[0], e.touches[1]);
+      touchStartRef.current = {
+        x: 0,
+        y: 0,
+        initPosX: position.x,
+        initPosY: position.y,
+        dist: dist,
+        initZoom: zoom
+      };
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (!image || isCameraActive) return;
+
+    if (e.touches.length === 1 && isDragging) {
+      const touch = e.touches[0];
+      const deltaX = (touch.clientX - touchStartRef.current.x) / zoom;
+      const deltaY = (touch.clientY - touchStartRef.current.y) / zoom;
+      setPosition({
+        x: touchStartRef.current.initPosX + deltaX,
+        y: touchStartRef.current.initPosY + deltaY
+      });
+    } else if (e.touches.length === 2 && touchStartRef.current.dist > 0) {
+      const newDist = getTouchDistance(e.touches[0], e.touches[1]);
+      const scale = newDist / touchStartRef.current.dist;
+      const newZoom = Math.min(Math.max(touchStartRef.current.initZoom * scale, 0.8), 3.5);
+      setZoom(newZoom);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    touchStartRef.current.dist = 0;
+  };
 
   // Camera Management
   const startCamera = async () => {
@@ -473,6 +533,10 @@ function App() {
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerLeave={handlePointerUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onTouchCancel={handleTouchEnd}
           >
             {isCameraActive ? (
               <video 
