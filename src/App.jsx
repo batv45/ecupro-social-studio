@@ -320,15 +320,17 @@ function App() {
               <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.25rem' }}>
                 <button 
                   className={`btn ${fitMode === 'contain' ? 'btn-primary' : ''}`}
-                  style={{ flex: 1, padding: '0.4rem', fontSize: '0.75rem', backgroundColor: fitMode === 'contain' ? undefined : 'var(--bg-panel)' }}
+                  style={{ flex: 1, padding: '0.45rem 0.2rem', fontSize: '0.72rem', backgroundColor: fitMode === 'contain' ? undefined : 'var(--bg-panel)' }}
                   onClick={() => setFitMode('contain')}
+                  title="Fotoğrafın hiçbir yerini kesmez, tamamını sığdırır"
                 >
-                  Sığdır (Kırpma)
+                  Sığdır (Kırpmasız)
                 </button>
                 <button 
                   className={`btn ${fitMode === 'cover' ? 'btn-primary' : ''}`}
-                  style={{ flex: 1, padding: '0.4rem', fontSize: '0.75rem', backgroundColor: fitMode === 'cover' ? undefined : 'var(--bg-panel)' }}
+                  style={{ flex: 1, padding: '0.45rem 0.2rem', fontSize: '0.72rem', backgroundColor: fitMode === 'cover' ? undefined : 'var(--bg-panel)' }}
                   onClick={() => setFitMode('cover')}
+                  title="Çerçeveyi tamamen doldurur"
                 >
                   Doldur (Kapla)
                 </button>

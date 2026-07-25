@@ -168,7 +168,7 @@ input[type="text"]:focus, input[type="number"]:focus, select:focus {
   background-size: 24px 24px;
   background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 0 2px var(--accent-orange), 0 25px 50px -12px rgba(0, 0, 0, 0.8);
   transition: width 0.3s, height 0.3s;
   margin: 0 auto;
 }
