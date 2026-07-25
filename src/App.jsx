@@ -461,10 +461,11 @@ function App() {
 
       {/* Main Preview Area */}
       <div className="preview-area">
-        <div 
-          ref={exportRef}
-          className={`export-container ${format === 'post' ? 'format-post' : 'format-story'} layout-standard`}
-        >
+        <div className="preview-canvas-wrapper">
+          <div 
+            ref={exportRef}
+            className={`export-container ${format === 'post' ? 'format-post' : 'format-story'} layout-standard`}
+          >
           {/* Background Area (Live Video or Image) */}
           <div 
             className="bg-image-container"
@@ -731,6 +732,7 @@ function App() {
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 }

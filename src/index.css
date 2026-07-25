@@ -157,6 +157,16 @@ input[type="text"]:focus, input[type="number"]:focus, select:focus {
   }
 }
 
+.preview-canvas-wrapper {
+  position: relative;
+  border: 2px dashed var(--accent-orange);
+  border-radius: 4px;
+  padding: 2px;
+  margin: 0 auto;
+  max-width: 100%;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+}
+
 .export-container {
   position: relative;
   background-color: #1c100e;
@@ -168,7 +178,7 @@ input[type="text"]:focus, input[type="number"]:focus, select:focus {
   background-size: 24px 24px;
   background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
   overflow: hidden;
-  box-shadow: 0 0 0 2px var(--accent-orange), 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  box-shadow: none;
   transition: width 0.3s, height 0.3s;
   margin: 0 auto;
 }
