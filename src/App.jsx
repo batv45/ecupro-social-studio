@@ -54,9 +54,9 @@ function App() {
   const streamRef = useRef(null);
 
   // Form State
-  const [mainTitle1, setMainTitle1] = useState('Mercedes');
-  const [mainTitle2, setMainTitle2] = useState('C200d');
-  const [subtitle, setSubtitle] = useState('Stage-1 Performans Yazılımı');
+  const [mainTitle1, setMainTitle1] = useState('Tofaş');
+  const [mainTitle2, setMainTitle2] = useState('Doğan');
+  const [subtitle, setSubtitle] = useState('Stage Performans Yazılımı');
   const [fuelSavings, setFuelSavings] = useState('');
   const [hpBefore, setHpBefore] = useState('136');
   const [hpAfter, setHpAfter] = useState('165');
