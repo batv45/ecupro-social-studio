@@ -164,7 +164,7 @@ function App() {
     setZoom(1);
   };
 
-  // Download Handler
+  // Download Handler (Mobile & Desktop HD Export Fix)
   const handleDownload = async () => {
     if (!exportRef.current) return;
     if (isCameraActive) {
@@ -172,14 +172,34 @@ function App() {
       return;
     }
     try {
-      const dataUrl = await toPng(exportRef.current, { cacheBust: true, pixelRatio: 2 });
+      const node = exportRef.current;
+      
+      // Pass 1: Warm up html-to-image font/image cache
+      await toPng(node, { pixelRatio: 2, skipAutoScale: true });
+
+      // Pass 2: Render crisp high-definition PNG data URL
+      const dataUrl = await toPng(node, { pixelRatio: 2, skipAutoScale: true });
+
+      // Convert Data URL to Blob for seamless iOS Safari and Android Mobile downloads
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+
+      const fileName = `ECUPro_${mainTitle1}_${mainTitle2}_${format}.png`.replace(/\s+/g, '_');
+
       const link = document.createElement('a');
-      link.download = `${mainTitle1}-${mainTitle2}-${format}.png`;
-      link.href = dataUrl;
+      link.download = fileName;
+      link.href = blobUrl;
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
+
+      setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+      }, 5000);
     } catch (err) {
       console.error('Görsel indirme hatası:', err);
-      alert('Görsel oluşturulurken bir hata oluştu.');
+      alert('Görsel oluşturulurken bir hata oluştu: ' + (err?.message || err));
     }
   };
 
