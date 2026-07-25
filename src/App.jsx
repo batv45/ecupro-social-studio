@@ -356,6 +356,7 @@ function App() {
             <option value="EGR Arıza Çözümü" />
             <option value="DSG Optimizasyon Yazılımı" />
             <option value="AdBlue Arıza Çözümü" />
+            <option value="Oksijen Sensör Arıza Çözümü" />
             <option value="Orjinal Yazılım Güncelleme" />
           </datalist>
 
@@ -368,6 +369,7 @@ function App() {
               'EGR Arıza Çözümü',
               'DSG Optimizasyon Yazılımı',
               'AdBlue Arıza Çözümü',
+              'Oksijen Sensör Arıza Çözümü',
               'Orjinal Yazılım Güncelleme'
             ].map((tmpl) => (
               <button
