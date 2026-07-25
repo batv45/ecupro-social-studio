@@ -131,17 +131,7 @@ function App() {
         setImage(dataUrl);
         setPosition({ x: 0, y: 0 });
         setZoom(1);
-
-        // Auto-detect wide landscape photos and set fitMode to 'contain' so wide cars are not cropped!
-        const img = new Image();
-        img.onload = () => {
-          if (img.width >= img.height) {
-            setFitMode('contain');
-          } else {
-            setFitMode('cover');
-          }
-        };
-        img.src = dataUrl;
+        setFitMode('contain'); // Always use contain so image is never auto-cropped in preview!
       };
       reader.readAsDataURL(file);
     }
@@ -346,12 +336,12 @@ function App() {
             </div>
 
             <div style={{ marginTop: '0.75rem' }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Yakınlaştır: {zoom.toFixed(1)}x</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Yakınlaştır / Boyutlandır: {zoom.toFixed(2)}x</span>
               <input 
                 type="range" 
-                min="1" 
-                max="3" 
-                step="0.05" 
+                min="0.8" 
+                max="3.5" 
+                step="0.02" 
                 value={zoom} 
                 onChange={(e) => setZoom(parseFloat(e.target.value))}
                 style={{ width: '100%', marginTop: '0.25rem' }}
