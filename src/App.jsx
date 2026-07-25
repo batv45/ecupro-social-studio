@@ -58,10 +58,10 @@ function App() {
   const [mainTitle2, setMainTitle2] = useState('Doğan');
   const [subtitle, setSubtitle] = useState('Stage Performans Yazılımı');
   const [fuelSavings, setFuelSavings] = useState('');
-  const [hpBefore, setHpBefore] = useState('136');
-  const [hpAfter, setHpAfter] = useState('165');
-  const [torqueBefore, setTorqueBefore] = useState('320');
-  const [torqueAfter, setTorqueAfter] = useState('390');
+  const [hpBefore, setHpBefore] = useState('80');
+  const [hpAfter, setHpAfter] = useState('120');
+  const [torqueBefore, setTorqueBefore] = useState('130');
+  const [torqueAfter, setTorqueAfter] = useState('195');
 
   const clearStats = () => {
     setHpBefore('');
